@@ -1,7 +1,8 @@
-package com.evgenii.coolgraph
+package com.evgenii.coolgraph.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.evgenii.coolgraph.R
 
 class MainActivity : AppCompatActivity() {
 

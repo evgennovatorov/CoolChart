@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.evgenii.coolgraph.MainFragment"
+        android:name="com.evgenii.coolgraph.ui.start.StartFragment"
         android:label="MainFragment" >
         <action
             android:id="@+id/action_mainFragment_to_graphFragment"
