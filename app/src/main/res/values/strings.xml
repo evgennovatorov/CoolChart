@@ -7,6 +7,13 @@
     <string name="start_fragment_label">Подготовка</string>
     <string name="chart_fragment_label">График</string>
 
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
+    <string name="save_to_gallery">Сохранить</string>
+
+    <string name="write_storage_permission_title">Необходимо разрешение для сохранения графика</string>
+
+    <string name="permission_required">Необходимо разрешение</string>
+
+    <string name="write_storage_fail">Сохранение графика невозможно</string>
+
+    <string name="success_chart_saving">График сохранен!</string>
 </resources>
