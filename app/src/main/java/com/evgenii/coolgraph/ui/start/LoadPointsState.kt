@@ -1,5 +1,9 @@
 package com.evgenii.coolgraph.ui.start
 
-enum class LoadPointsState {
-    INITIAL, SUCCESS, ERROR
-}
+import com.evgenii.coolgraph.business.model.Point
+
+sealed class PointsLoadingState
+
+class SuccessState(val points: List<Point>): PointsLoadingState()
+
+object ErrorState : PointsLoadingState()

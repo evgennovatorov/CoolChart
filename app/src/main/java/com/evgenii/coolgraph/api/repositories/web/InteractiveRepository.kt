@@ -1,4 +1,4 @@
-package com.evgenii.coolgraph.api
+package com.evgenii.coolgraph.api.repositories.web
 
 import com.evgenii.coolgraph.api.retrofit.ApiRequests
 import com.evgenii.coolgraph.business.model.Point

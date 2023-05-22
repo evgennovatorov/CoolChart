@@ -2,18 +2,22 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/default_graph"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/startFragment">
 
     <fragment
-        android:id="@+id/mainFragment"
+        android:id="@+id/startFragment"
         android:name="com.evgenii.coolgraph.ui.start.StartFragment"
-        android:label="MainFragment" >
+        android:label="@string/start_fragment_label" >
         <action
-            android:id="@+id/action_mainFragment_to_graphFragment"
+            android:id="@+id/action_startFragment_to_graphFragment"
             app:destination="@id/graphFragment" />
     </fragment>
     <fragment
         android:id="@+id/graphFragment"
-        android:name="com.evgenii.coolgraph.GraphFragment"
-        android:label="GraphFragment" />
+        android:name="com.evgenii.coolgraph.ui.chart.ChartFragment"
+        android:label="@string/chart_fragment_label" >
+        <argument
+            android:name="points"
+            app:argType="com.evgenii.coolgraph.business.model.Point[]" />
+    </fragment>
 </navigation>

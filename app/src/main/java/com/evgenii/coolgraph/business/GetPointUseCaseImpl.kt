@@ -1,6 +1,6 @@
 package com.evgenii.coolgraph.business
 
-import com.evgenii.coolgraph.api.Repository
+import com.evgenii.coolgraph.api.repositories.web.Repository
 import com.evgenii.coolgraph.business.model.Point
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,8 +17,9 @@ class GetPointUseCaseImpl(
         return try {
             repository.getPoints(count)
         } catch (e: Exception) {
-            isRunningInternal.tryEmit(false)
             throw e
+        } finally {
+            isRunningInternal.tryEmit(false)
         }
     }
 }

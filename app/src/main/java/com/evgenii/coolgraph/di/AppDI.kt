@@ -1,8 +1,8 @@
 package com.evgenii.coolgraph.di
 
-import com.evgenii.coolgraph.api.Repository
+import com.evgenii.coolgraph.api.repositories.web.Repository
 import com.evgenii.coolgraph.api.retrofit.ApiRequests
-import com.evgenii.coolgraph.api.InteractiveRepository
+import com.evgenii.coolgraph.api.repositories.web.InteractiveRepository
 import com.evgenii.coolgraph.api.okhttp.InteractiveOkHttpProvider
 import com.evgenii.coolgraph.api.okhttp.OkhttpProvider
 import com.evgenii.coolgraph.api.retrofit.InteractiveRetrofitProvider

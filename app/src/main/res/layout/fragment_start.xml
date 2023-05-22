@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="@dimen/default_padding">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="@dimen/default_padding"
+    tools:context="ui.start.StartFragment">
 
     <TextView
         android:id="@+id/info_text"

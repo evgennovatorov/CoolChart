@@ -7,18 +7,17 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.evgenii.coolgraph.R
 import com.evgenii.coolgraph.databinding.FragmentStartBinding
 import com.evgenii.coolgraph.ui.UiUtils.getTextEmptyFlow
 import com.evgenii.coolgraph.ui.UiUtils.hide
 import com.evgenii.coolgraph.ui.UiUtils.setInvisible
 import com.evgenii.coolgraph.ui.UiUtils.show
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import com.evgenii.coolgraph.ui.start.LoadPointsState.SUCCESS
-import com.evgenii.coolgraph.ui.start.LoadPointsState.ERROR
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class StartFragment: Fragment(R.layout.fragment_start) {
+class StartFragment: Fragment() {
 
     private var _binding: FragmentStartBinding? = null
 
@@ -41,16 +40,18 @@ class StartFragment: Fragment(R.layout.fragment_start) {
     }
 
     private fun listenToViewModel() {
-        lifecycleScope.launch {
+        lifecycleScope.launchWhenCreated {
             viewModel.result.collect {
                 when (it) {
-                    SUCCESS -> {
-
+                    is SuccessState -> {
+                        val action = StartFragmentDirections.actionStartFragmentToGraphFragment(
+                            it.points.toTypedArray()
+                        )
+                        findNavController().navigate(action)
                     }
-                    ERROR -> {
+                    ErrorState -> {
                         binding.errorText.show()
                     }
-                    else -> {}
                 }
             }
         }
