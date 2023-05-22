@@ -8,6 +8,9 @@ class InteractiveRepository(
 ): Repository {
 
     override suspend fun getPoints(count: Int): List<Point> {
-        return apiRequests.getPoints(count).points.map(Point::map)
+        return apiRequests.getPoints(count)
+            .points
+            .sortedBy { it.x }
+            .map(Point::map)
     }
 }

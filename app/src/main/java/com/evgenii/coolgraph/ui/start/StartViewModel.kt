@@ -3,11 +3,14 @@ package com.evgenii.coolgraph.ui.start
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.evgenii.coolgraph.business.GetPointUseCase
+import com.evgenii.coolgraph.business.model.Point
 import com.evgenii.coolgraph.common.AppLogger
+import com.evgenii.coolgraph.common.createSingleEventFlow
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 private val TAG = "StartViewModel"
@@ -17,23 +20,26 @@ class StartViewModel(
     private val logger: AppLogger
 ): ViewModel() {
 
-    private val resultInternal = MutableSharedFlow<PointsLoadingState>()
+    private val resultInternal = createSingleEventFlow<List<Point>>()
     val result = resultInternal.asSharedFlow()
+
+    private val errorInternal = MutableStateFlow(false)
+    val error = errorInternal.asStateFlow()
 
     val isLoading = getPointUseCaseImpl.isRunning
 
     private val errorHandler = CoroutineExceptionHandler { context, throwable ->
         logger.error(TAG, "error handler", throwable)
-        viewModelScope.launch {
-            resultInternal.emit(ErrorState)
-        }
+        errorInternal.tryEmit(true)
     }
 
     fun loadPoints(count: String) {
+        errorInternal.tryEmit(false)
         viewModelScope.launch(Dispatchers.IO + errorHandler) {
             count.safeGetInt()?.let {
                 val points = getPointUseCaseImpl(it)
-                resultInternal.emit(SuccessState(points))
+                val c = resultInternal.subscriptionCount.value
+                resultInternal.emit(points)
             }
         }
     }
@@ -42,7 +48,7 @@ class StartViewModel(
         try {
             toInt()
         } catch (e: Exception) {
-            resultInternal.tryEmit(ErrorState)
+            errorInternal.tryEmit(true)
             null
         }
 }

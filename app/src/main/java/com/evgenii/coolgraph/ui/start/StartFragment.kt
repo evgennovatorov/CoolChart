@@ -6,15 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.evgenii.coolgraph.R
+import com.evgenii.coolgraph.common.collect
 import com.evgenii.coolgraph.databinding.FragmentStartBinding
 import com.evgenii.coolgraph.ui.UiUtils.getTextEmptyFlow
 import com.evgenii.coolgraph.ui.UiUtils.hide
 import com.evgenii.coolgraph.ui.UiUtils.setInvisible
 import com.evgenii.coolgraph.ui.UiUtils.show
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class StartFragment: Fragment() {
@@ -40,35 +38,31 @@ class StartFragment: Fragment() {
     }
 
     private fun listenToViewModel() {
-        lifecycleScope.launchWhenCreated {
-            viewModel.result.collect {
-                when (it) {
-                    is SuccessState -> {
-                        val action = StartFragmentDirections.actionStartFragmentToGraphFragment(
-                            it.points.toTypedArray()
-                        )
-                        findNavController().navigate(action)
-                    }
-                    ErrorState -> {
-                        binding.errorText.show()
-                    }
-                }
+        viewModel.result.collect(viewLifecycleOwner) {
+            val action = StartFragmentDirections.actionStartFragmentToGraphFragment(
+                it.toTypedArray()
+            )
+            findNavController().navigate(action)
+        }
+        viewModel.error.collect(viewLifecycleOwner) {
+            if (it) {
+                binding.errorText.show()
+            } else {
+                binding.errorText.hide()
             }
         }
-        lifecycleScope.launchWhenResumed {
-            viewModel.isLoading.collect { showProgress ->
-                binding.countInput.setInvisible(showProgress)
-                binding.progressBar.isVisible = showProgress
+        viewModel.isLoading.collect(viewLifecycleOwner) { showProgress ->
+            binding.countInput.setInvisible(showProgress)
+            binding.progressBar.isVisible = showProgress
+            if (binding.countInput.text.toString().isNotEmpty()) {
                 binding.button.isEnabled = !showProgress
             }
         }
     }
 
     private fun bindCountInput() {
-        lifecycleScope.launchWhenResumed {
-            binding.countInput.getTextEmptyFlow().collect { isEmpty ->
-                binding.button.isEnabled = !isEmpty
-            }
+        binding.countInput.getTextEmptyFlow().collect(viewLifecycleOwner) { isEmpty ->
+            binding.button.isEnabled = !isEmpty
         }
     }
 
