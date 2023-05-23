@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.CoolGraph" parent="Theme.AppCompat" />
+    <style name="Theme.CoolGraph" parent="Theme.AppCompat">
+        <item name="android:navigationBarColor">@color/black</item>
+    </style>
 </resources>
