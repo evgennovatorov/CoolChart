@@ -9,7 +9,7 @@ private const val URL = "https://hr-challenge.interactivestandard.com/"
 class InteractiveRetrofitProvider(
     okhttpProvider: OkhttpProvider
 ): RetrofitProvider {
-    override val retrofit by lazy {
+    override val retrofit: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(URL)
             .client(okhttpProvider.client)

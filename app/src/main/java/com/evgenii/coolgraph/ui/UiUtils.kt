@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.callbackFlow
 
 object UiUtils {
 
-    fun EditText.getTextEmptyFlow() = callbackFlow<Boolean> {
+    fun EditText.getTextEmptyFlow() = callbackFlow {
         val textWatcher = object : TextWatcher {
 
             private var isEmpty = true

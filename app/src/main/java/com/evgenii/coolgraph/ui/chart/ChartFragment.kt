@@ -39,7 +39,8 @@ class ChartFragment: Fragment() {
 
     private val chartMenuProvider = ChartMenuProvider()
 
-    private val launcher =  registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+    private val resultLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
             if (it) {
                 saveChart()
             } else {
@@ -112,7 +113,7 @@ class ChartFragment: Fragment() {
             fillColor = Color.WHITE
             fillAlpha = 100
             setDrawHorizontalHighlightIndicator(false)
-            fillFormatter = IFillFormatter { dataSet, dataProvider ->
+            fillFormatter = IFillFormatter { _, _ ->
                 binding.chart.axisLeft.axisMinimum
             }
         }
@@ -122,14 +123,15 @@ class ChartFragment: Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        (requireActivity() as? MenuHost)?.removeMenuProvider(chartMenuProvider)
-        super.onDestroyView()
-        _binding = null
-    }
-
     private fun getData() = args.points.map {
         Entry(it.x, it.y)
+    }
+
+    override fun onDestroyView() {
+        (requireActivity() as? MenuHost)?.removeMenuProvider(chartMenuProvider)
+        resultLauncher.unregister()
+        _binding = null
+        super.onDestroyView()
     }
 
     private fun requestPermission() {
@@ -142,13 +144,12 @@ class ChartFragment: Fragment() {
                 binding.chart,
                 getString(R.string.write_storage_permission_title),
                 Snackbar.LENGTH_INDEFINITE
-            )
-                .setAction(android.R.string.ok) {
-                    launcher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                }.show()
+            ).setAction(android.R.string.ok) {
+                resultLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            }.show()
         } else {
             showToast(R.string.permission_required)
-            launcher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            resultLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }
     }
 

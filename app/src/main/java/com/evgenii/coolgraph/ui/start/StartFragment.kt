@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -22,6 +24,7 @@ class StartFragment: Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel by viewModel<StartViewModel>()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -70,7 +73,17 @@ class StartFragment: Fragment() {
         binding.button.setOnClickListener {
             viewModel.loadPoints(binding.countInput.text.toString())
             binding.errorText.hide()
+            hideKeyboard()
         }
+    }
+
+    private fun hideKeyboard() {
+        val imm: InputMethodManager? =
+            ContextCompat.getSystemService(
+                requireContext(),
+                InputMethodManager::class.java
+            )
+        imm?.hideSoftInputFromWindow(binding.countInput.windowToken, 0)
     }
 
     override fun onDestroyView() {

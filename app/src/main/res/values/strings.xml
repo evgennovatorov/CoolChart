@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Cool Graph</string>
+    <string name="app_name">Cool Chart</string>
     <string name="start_info">Введите количество координат для отображения графика</string>
     <string name="button_text">Погнали</string>
     <string name="error_text">Что-то пошло не так, попробуйте еще раз</string>

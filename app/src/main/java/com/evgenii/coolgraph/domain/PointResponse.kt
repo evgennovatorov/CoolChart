@@ -1,6 +1,7 @@
 package com.evgenii.coolgraph.domain
 
-import kotlinx.serialization.Serializable
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
-@Serializable
-data class PointResponse(val x: Float, val y: Float)
+@Parcelize
+data class PointResponse(val x: Float, val y: Float): Parcelable

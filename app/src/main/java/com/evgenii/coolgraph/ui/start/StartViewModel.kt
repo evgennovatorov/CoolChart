@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-private val TAG = "StartViewModel"
+private const val TAG = "StartViewModel"
 
 class StartViewModel(
     private val getPointUseCaseImpl: GetPointUseCase,
@@ -28,7 +28,7 @@ class StartViewModel(
 
     val isLoading = getPointUseCaseImpl.isRunning
 
-    private val errorHandler = CoroutineExceptionHandler { context, throwable ->
+    private val errorHandler = CoroutineExceptionHandler { _, throwable ->
         logger.error(TAG, "error handler", throwable)
         errorInternal.tryEmit(true)
     }
@@ -38,7 +38,6 @@ class StartViewModel(
         viewModelScope.launch(Dispatchers.IO + errorHandler) {
             count.safeGetInt()?.let {
                 val points = getPointUseCaseImpl(it)
-                val c = resultInternal.subscriptionCount.value
                 resultInternal.emit(points)
             }
         }
