@@ -24,7 +24,7 @@
         android:layout_width="@dimen/count_input_width"
         android:layout_height="wrap_content"
         android:inputType="number"
-        android:maxLength="100"
+        android:maxLength="3"
         android:textAlignment="center"
         app:layout_constraintVertical_bias="0.3"
         app:layout_constraintTop_toTopOf="parent"
