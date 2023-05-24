@@ -18,7 +18,11 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.evgenii.coolgraph.R
+import com.evgenii.coolgraph.common.DeviceConfigurationProvider
 import com.evgenii.coolgraph.databinding.FragmentChartBinding
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
@@ -28,9 +32,12 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IFillFormatter
 import com.google.android.material.snackbar.Snackbar
+import org.koin.android.ext.android.inject
 
 private const val FILENAME = "CoolChart"
 class ChartFragment: Fragment() {
+
+    private val deviceConfigurationProvider: DeviceConfigurationProvider by inject()
 
     private var _binding: FragmentChartBinding? = null
     private val binding get() = _binding!!
@@ -62,7 +69,31 @@ class ChartFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         bindChart()
         setupMenu()
+        bindRecyclerView()
     }
+
+    private fun bindRecyclerView() {
+        binding.pointView.setText(R.string.x_label, R.string.y_label)
+        with(binding.recyclerView) {
+            layoutManager = LinearLayoutManager(
+                requireContext(),
+                deviceConfigurationProvider.getRecyclerViewOrientation(),
+                false
+            )
+            adapter = PointsAdapter(args.points)
+            addItemDecoration(
+                DividerItemDecoration(requireContext(),
+                    deviceConfigurationProvider.getRecyclerViewOrientation())
+            )
+        }
+    }
+
+    private fun DeviceConfigurationProvider.getRecyclerViewOrientation() =
+        if (isLandscape()) {
+            RecyclerView.VERTICAL
+        } else {
+            RecyclerView.HORIZONTAL
+        }
 
     private fun setupMenu() {
         (requireActivity() as? MenuHost)?.addMenuProvider(chartMenuProvider)

@@ -12,7 +12,10 @@ import com.evgenii.coolgraph.business.GetPointUseCase
 import com.evgenii.coolgraph.business.GetPointUseCaseImpl
 import com.evgenii.coolgraph.common.AppLogger
 import com.evgenii.coolgraph.common.ConsoleLogger
+import com.evgenii.coolgraph.common.DeviceConfigurationProvider
+import com.evgenii.coolgraph.common.DeviceConfigurationProviderImpl
 import com.evgenii.coolgraph.ui.start.StartViewModel
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -24,6 +27,7 @@ object AppDI {
         factory<GetPointUseCase> { GetPointUseCaseImpl(get()) }
         single<AppLogger> { ConsoleLogger() }
         factory<OkhttpProvider> { InteractiveOkHttpProvider() }
+        factory<DeviceConfigurationProvider> { DeviceConfigurationProviderImpl(androidContext()) }
     }
 
     val viewModelModule = module {

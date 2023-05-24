@@ -16,4 +16,7 @@
     <string name="write_storage_fail">Сохранение графика невозможно</string>
 
     <string name="success_chart_saving">График сохранен!</string>
+
+    <string name="x_label">x:</string>
+    <string name="y_label">y:</string>
 </resources>
